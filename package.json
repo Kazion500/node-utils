@@ -1,6 +1,6 @@
 {
   "name": "@kazion/node-utils",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "This is a collection of utilities when create Rest or Graphql apis. It is a work in progress and will be updated as I add more functionality.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
