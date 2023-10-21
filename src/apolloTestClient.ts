@@ -13,6 +13,11 @@ interface QueryResult<Results = any> {
   body: BodyResponse<Results>;
 }
 
+type GraphQLResponse<T> = {
+  data: T;
+  errors: readonly GraphQLFormattedError[];
+};
+
 export const createGraphqlTestClient = <Context extends BaseContext, T>(
   schema: any
 ) => {
@@ -24,11 +29,13 @@ export const createGraphqlTestClient = <Context extends BaseContext, T>(
     query: string,
     variables?: any,
     contextValue?: Context
-  ) => {
-    return (await server.executeOperation(
+  ): Promise<GraphQLResponse<T>> => {
+    const { body } = (await server.executeOperation(
       { query: `query ${query}`, variables },
       { contextValue }
     )) as QueryResult<T>;
+
+    return body.singleResult;
   };
 
   const mutate = async (
@@ -36,10 +43,12 @@ export const createGraphqlTestClient = <Context extends BaseContext, T>(
     variables?: any,
     contextValue?: Context
   ) => {
-    return (await server.executeOperation(
+    const { body } = (await server.executeOperation(
       { query: `mutation ${mutation}`, variables },
       { contextValue }
     )) as QueryResult<T>;
+
+    return body.singleResult;
   };
 
   return { query, mutate };
