@@ -13,14 +13,14 @@ interface QueryResult<Results = any> {
   body: BodyResponse<Results>;
 }
 
-export const createGraphqlTestClient = <Context extends BaseContext>(
+export const createGraphqlTestClient = <Context extends BaseContext, T>(
   schema: any
 ) => {
   const server = new ApolloServer<Context>({
     schema,
   });
 
-  const query = async <T>(
+  const query = async (
     query: string,
     variables?: any,
     contextValue?: Context
@@ -31,7 +31,7 @@ export const createGraphqlTestClient = <Context extends BaseContext>(
     )) as QueryResult<T>;
   };
 
-  const mutate = async <T>(
+  const mutate = async (
     mutation: string,
     variables?: any,
     contextValue?: Context
