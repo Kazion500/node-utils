@@ -8,9 +8,7 @@
     "test": "vitest",
     "build": "rm -rf dist && tsc && tsc-alias -p tsconfig.json",
     "prepublishOnly": "pnpm build",
-    "preversion": "git add . && git commit -m \"chore: release $npm_package_version\"",
-    "version": "git tag $npm_package_version",
-    "postversion": "git push --follow-tags"
+    "postversion": "git tag -d $npm_package_version && git push --tags origin main && git push origin main"
   },
   "private": false,
   "publishConfig": {
