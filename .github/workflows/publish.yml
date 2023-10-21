@@ -45,6 +45,17 @@ jobs:
           node-version: "18.x"
           registry-url: "https://registry.npmjs.org"
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
       - name: Publish to NPM Registry
         run: npm publish
         env:

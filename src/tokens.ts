@@ -18,7 +18,7 @@ interface CreateTokenOption extends BaseTokenOptions {
   exp?: string;
 }
 
-export const createToken = async (userId: string, opt: CreateTokenOption) => {
+export const createJWT = async (userId: string, opt: CreateTokenOption) => {
   if (!opt.secret) {
     throw new Error("secret must be provided");
   }
@@ -30,7 +30,7 @@ export const createToken = async (userId: string, opt: CreateTokenOption) => {
   return token;
 };
 
-export const verifyToken = async (token: string, opt: BaseTokenOptions) => {
+export const verifyJWT = async (token: string, opt: BaseTokenOptions) => {
   try {
     const { payload } = await jose.jwtVerify(
       token,
@@ -42,7 +42,7 @@ export const verifyToken = async (token: string, opt: BaseTokenOptions) => {
   }
 };
 
-export const decodeToken = (token: string) => {
+export const decodeJWT = (token: string) => {
   const decoded = jose.decodeJwt(token);
   return decoded as { uid: string };
 };

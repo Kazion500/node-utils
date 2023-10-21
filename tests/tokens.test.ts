@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createToken, decodeToken, verifyToken } from "../src/tokens";
+import { createJWT, decodeJWT, verifyJWT } from "../src/tokens";
 
 const testPayload = {
   id: "test-id",
@@ -9,25 +9,25 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe("tokens", () => {
   it("should create", async () => {
-    const token = await createToken(testPayload.id, { secret: "test-secret" });
+    const token = await createJWT(testPayload.id, { secret: "test-secret" });
     expect(token).toBeDefined();
   });
 
   it("should decode", async () => {
-    const token = await createToken(testPayload.id, {
+    const token = await createJWT(testPayload.id, {
       secret: "test-secret",
     });
-    const decoded = await decodeToken(token);
+    const decoded = await decodeJWT(token);
     expect(decoded.uid).toBe(testPayload.id);
   });
 
   it("should verify", async () => {
-    const token = await createToken(testPayload.id, {
+    const token = await createJWT(testPayload.id, {
       secret: "test-secret",
       exp: "1s",
     });
 
-    const payload = await verifyToken(token, {
+    const payload = await verifyJWT(token, {
       secret: "test-secret",
     });
 
@@ -36,7 +36,7 @@ describe("tokens", () => {
 
   it("should throw error when secret is not provided", async () => {
     try {
-      await createToken(testPayload.id, { secret: "" });
+      await createJWT(testPayload.id, { secret: "" });
     } catch (error) {
       expect(error.message).toBe("secret must be provided");
     }
@@ -44,21 +44,21 @@ describe("tokens", () => {
 
   it("should throw error when token is invalid", async () => {
     try {
-      await decodeToken("invalid-token");
+      await decodeJWT("invalid-token");
     } catch (error) {
       expect(error.message).toBe("Invalid JWT");
     }
   });
 
   it("should throw error when token is expired", async () => {
-    const token = await createToken(testPayload.id, {
+    const token = await createJWT(testPayload.id, {
       secret: "test-secret",
       exp: "1s",
     });
 
     try {
-      await sleep(2000);
-      await verifyToken(token, {
+      await sleep(1200);
+      await verifyJWT(token, {
         secret: "test-secret",
       });
     } catch (error) {
