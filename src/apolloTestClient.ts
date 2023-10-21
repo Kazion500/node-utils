@@ -13,12 +13,14 @@ interface QueryResult<Results = any> {
   body: BodyResponse<Results>;
 }
 
-export const createGraphqlTestClient = <Context extends BaseContext>(schema: any) => {
+export const createGraphqlTestClient = <Context extends BaseContext>(
+  schema: any
+) => {
   const server = new ApolloServer<Context>({
     schema,
   });
 
-  const query = async <Response>(
+  const query = async <T>(
     query: string,
     variables?: any,
     contextValue?: Context
@@ -26,10 +28,10 @@ export const createGraphqlTestClient = <Context extends BaseContext>(schema: any
     return (await server.executeOperation(
       { query: `query ${query}`, variables },
       { contextValue }
-    )) as QueryResult<Response>;
+    )) as QueryResult<T>;
   };
 
-  const mutate = async <Response>(
+  const mutate = async <T>(
     mutation: string,
     variables?: any,
     contextValue?: Context
@@ -37,7 +39,7 @@ export const createGraphqlTestClient = <Context extends BaseContext>(schema: any
     return (await server.executeOperation(
       { query: `mutation ${mutation}`, variables },
       { contextValue }
-    )) as QueryResult<Response>;
+    )) as QueryResult<T>;
   };
 
   return { query, mutate };
