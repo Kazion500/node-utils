@@ -8,6 +8,10 @@
     "test": "vitest",
     "build": "tsc"
   },
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
