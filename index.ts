@@ -1,4 +1,4 @@
-export { testClient } from "~/apolloTestClient";
+export { createGraphqlTestClient } from "~/apolloTestClient";
 export { formatZodError } from "~/formatZodError";
 export { logger } from "~/logger";
 export { comparePassword, hashPassword } from "~/passwordHash";

@@ -13,7 +13,7 @@ interface QueryResult<Results = any> {
   body: BodyResponse<Results>;
 }
 
-export const testClient = async <Context extends BaseContext>(schema: any) => {
+export const createGraphqlTestClient = async <Context extends BaseContext>(schema: any) => {
   const server = new ApolloServer<Context>({
     schema,
   });
