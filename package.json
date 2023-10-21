@@ -1,5 +1,5 @@
 {
-  "name": "@kazion/utils",
+  "name": "@kazion/node-utils",
   "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
