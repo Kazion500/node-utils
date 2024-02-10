@@ -1,11 +1,11 @@
 import { logger } from "./logger";
 
-export type ServerService = {
+type ServerService = {
   name: string;
   stop: () => Promise<void>;
 };
 
-export interface GracefulShutdownOptions {
+interface GracefulShutdownOptions {
   timeout?: number;
   development?: boolean;
   services?: ServerService[];
@@ -22,7 +22,10 @@ export const gracefulShutdown = (
       let timer: NodeJS.Timeout;
       logger.info(`Received ${signal}. Starting graceful shutdown.`);
 
-      const promises = services.map((service) => service.stop());
+      const promises = services.map((service) => {
+        logger.info(`🚨 Stopping ${service.name} service.`);
+        return service.stop();
+      });
 
       if (promises.length === 0) {
         logger.info("No services to stop. Exiting process.");
