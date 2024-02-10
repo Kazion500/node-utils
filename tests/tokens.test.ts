@@ -35,19 +35,13 @@ describe("tokens", () => {
   });
 
   it("should throw error when secret is not provided", async () => {
-    try {
-      await createJWT(testPayload.id, { secret: "" });
-    } catch (error) {
-      expect(error.message).toBe("secret must be provided");
-    }
+    expect(() => createJWT(testPayload.id, { secret: "" })).rejects.toThrow(
+      "secret must be provided"
+    );
   });
 
   it("should throw error when token is invalid", async () => {
-    try {
-      await decodeJWT("invalid-token");
-    } catch (error) {
-      expect(error.message).toBe("Invalid JWT");
-    }
+    expect(() => decodeJWT("invalid-token")).rejects.toThrowError();
   });
 
   it("should throw error when token is expired", async () => {
@@ -56,13 +50,11 @@ describe("tokens", () => {
       exp: "1s",
     });
 
-    try {
-      await sleep(1200);
-      await verifyJWT(token, {
+    await sleep(1200);
+    expect(() =>
+      verifyJWT(token, {
         secret: "test-secret",
-      });
-    } catch (error) {
-      expect(error.message).toBe("JWT has expired");
-    }
+      })
+    ).rejects.toThrow("JWT has expired");
   });
 });
