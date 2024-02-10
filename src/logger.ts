@@ -1,20 +1,11 @@
-import winston from "winston";
+import pinoLogger from "pino";
 
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.File({ filename: "error.log", level: "error" }),
-    new winston.transports.File({ filename: "combined.log" }),
-  ],
+const logger = pinoLogger({
+  msgPrefix: "[gracefulShutdown]: ",
+  redact: {
+    paths: ["hostname", "pid", "level"],
+    remove: true,
+  },
 });
-
-if (process.env.NODE_ENV !== "production") {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  );
-}
 
 export { logger };
