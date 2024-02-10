@@ -42,7 +42,7 @@ export const verifyJWT = async (token: string, opt: BaseTokenOptions) => {
   }
 };
 
-export const decodeJWT = (token: string) => {
-  const decoded = jose.decodeJwt(token);
+export const decodeJWT = async (token: string) => {
+  const decoded = await jose.decodeJwt(token);
   return decoded as { uid: string };
 };
